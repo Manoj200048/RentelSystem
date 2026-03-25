@@ -1,0 +1,13 @@
+package lk.rental.SmartRentalSystem;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SmartRentalSystemApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SmartRentalSystemApplication.class, args);
+	}
+
+}
