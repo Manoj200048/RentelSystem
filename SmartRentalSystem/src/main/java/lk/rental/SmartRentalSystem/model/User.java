@@ -24,12 +24,15 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole userRole; // Owner,Customer,Admin
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST,orphanRemoval = true)
+    @OneToMany(mappedBy = "owner",cascade = CascadeType.PERSIST,orphanRemoval = true)
     private List<OwnerItem> ownerItemList;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST,orphanRemoval = true)
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.PERSIST,orphanRemoval = true)
     private List<Review> reviewList;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.PERSIST,orphanRemoval = true)
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.PERSIST,orphanRemoval = true)
     private List<Booking> bookingList;
+
+    @OneToMany(mappedBy = "customer",cascade = CascadeType.PERSIST,orphanRemoval = true)
+    private List<Payment> paymentList;
 }

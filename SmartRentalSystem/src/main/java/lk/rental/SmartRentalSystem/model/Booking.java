@@ -45,5 +45,8 @@ public class Booking {
     @JoinColumn(name = "item_id")
     private Item item;
 
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    private Payment payment;
+
 
 }

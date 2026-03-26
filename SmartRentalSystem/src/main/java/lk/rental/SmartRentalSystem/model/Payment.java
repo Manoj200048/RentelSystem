@@ -29,4 +29,8 @@ public class Payment {
     @OneToOne
     @JoinColumn(name = "booking_id")
     private Booking booking;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private User customer;
 }
