@@ -2,7 +2,6 @@ package lk.rental.SmartRentalSystem.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Setter;
 
 import java.util.List;
 
@@ -19,6 +18,6 @@ public class Category {
     private String description;
 
     // One category has many items
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Item> items;
 }

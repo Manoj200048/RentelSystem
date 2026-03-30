@@ -1,6 +1,7 @@
 package lk.rental.SmartRentalSystem.model;
 
 import jakarta.persistence.*;
+import lk.rental.SmartRentalSystem.model.enums.AvailabilityStatus;
 import lombok.Data;
 
 import java.util.List;
@@ -10,12 +11,16 @@ import java.util.List;
 @Table(name = "items")
 public class Item {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String itemName;
     private Double pricePerDay;
-    private boolean available;
     private String location;
     private String imageUrl;
+
+    @Enumerated(EnumType.STRING)
+    private AvailabilityStatus itemAvailability;
 
     @OneToMany(mappedBy = "item",cascade = CascadeType.PERSIST,orphanRemoval = true)
     private List<OwnerItem> ownerItemList;

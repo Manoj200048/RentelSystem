@@ -69,12 +69,12 @@ public class CategoryController {
     }
 
     @PutMapping(value = "/{category-id}",headers = "X-Api-Version=v1")
-    public void update(@PathVariable("category-id")Long id, @RequestBody UpdateCategoryRequest updateCategoryRequest){
+    public void update(@PathVariable("category-id")Long id, @RequestBody UpdateCategoryRequest updateCategoryRequest) throws CategoryNotFoundException{
         categoryService.update(id,updateCategoryRequest);
     }
 
     @DeleteMapping(value = "/{category-id}",headers = "X-Api-Version=v1")
-    public void delete(@PathVariable("category-id") Long id){
+    public void delete(@PathVariable("category-id") Long id) throws CategoryNotFoundException{
         categoryService.delete(id);
     }
 }
