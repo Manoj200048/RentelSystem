@@ -32,7 +32,7 @@ public class Booking {
 
     // Payment status
     @Enumerated(EnumType.STRING)
-    private BookingPaymentStatus paymentStatus; // PAID, UNPAID
+    private BookingPaymentStatus bookingPaymentStatus; // PAID, UNPAID
 
     // Timestamp
     private LocalDateTime createdAt;

@@ -1,6 +1,7 @@
 package lk.rental.SmartRentalSystem.model;
 
 import jakarta.persistence.*;
+import lk.rental.SmartRentalSystem.model.enums.PaymentMethod;
 import lk.rental.SmartRentalSystem.model.enums.PaymentStatus;
 import lombok.Data;
 
@@ -17,9 +18,11 @@ public class Payment {
 
     private Double amount;
 
+    @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus ; // PENDING, SUCCESS, FAILED
 
-    private String paymentMethod; // CARD, PAYPAL
+    @Enumerated(EnumType.STRING)
+    private PaymentMethod paymentMethod; // CARD, PAYPAL
 
     private String transactionId; // from gateway
 
