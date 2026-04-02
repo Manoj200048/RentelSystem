@@ -16,7 +16,7 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping(value = "/{customer-id}/{booking-id}",headers = "X-Api-Version")
+    @PostMapping(value = "/{customer-id}/{booking-id}",headers = "X-Api-Version=v1")
     @ResponseStatus(HttpStatus.CREATED)
     public void pay(@PathVariable("customer-id")Long cid, @PathVariable("booking-id")Long bid, @RequestBody CreatePaymentRequest createPaymentRequest){
           paymentService.payPayment(cid,bid,createPaymentRequest);
