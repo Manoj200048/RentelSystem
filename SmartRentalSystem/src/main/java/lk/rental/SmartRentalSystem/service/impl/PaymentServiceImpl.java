@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -89,6 +90,18 @@ public class PaymentServiceImpl implements PaymentService {
         booking.setUpdatedAt(LocalDateTime.now());
         bookingRepository.save(booking);
 
+    }
+
+    @Override
+    public Payment findById(Long id) throws PaymentNotFoundException {
+        return  paymentRepository.findById(id).orElseThrow(
+                ()->new PaymentNotFoundException("Payment Not Found..!")
+        );
+    }
+
+    @Override
+    public List<Payment> findAll() {
+        return paymentRepository.findAll();
     }
 
 
