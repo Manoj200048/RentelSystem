@@ -1,6 +1,8 @@
 package lk.rental.SmartRentalSystem.repository;
 
 import lk.rental.SmartRentalSystem.model.Booking;
+import lk.rental.SmartRentalSystem.model.Item;
+import lk.rental.SmartRentalSystem.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,4 +24,7 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
             LocalDate startDate,
             LocalDate endDate
     );
+
+
+    Boolean existsByCustomerAndItem(User user, Item item);
 }

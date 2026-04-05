@@ -52,7 +52,7 @@ public class PaymentController {
 
     }
 
-    @GetMapping(headers = "X-Api-Version= v1")
+    @GetMapping(headers = "X-Api-Version=v1")
     public ViewAllPaymentResponse getAll(){
         List<Payment> paymentList = paymentService.findAll();
 
