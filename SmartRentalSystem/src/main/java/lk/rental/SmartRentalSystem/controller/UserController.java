@@ -2,8 +2,8 @@ package lk.rental.SmartRentalSystem.controller;
 
 import lk.rental.SmartRentalSystem.controller.request.CreateUserRequest;
 import lk.rental.SmartRentalSystem.controller.request.UpdateUserRequest;
+import lk.rental.SmartRentalSystem.controller.response.PaginatedResponse;
 import lk.rental.SmartRentalSystem.controller.response.ViewAllUser;
-import lk.rental.SmartRentalSystem.controller.response.ViewAllUserListResponse;
 import lk.rental.SmartRentalSystem.controller.response.ViewUserResponse;
 import lk.rental.SmartRentalSystem.exception.UserNotFoundException;
 import lk.rental.SmartRentalSystem.model.User;
@@ -11,11 +11,12 @@ import lk.rental.SmartRentalSystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/user")
@@ -48,32 +49,32 @@ public class UserController {
                   .build();
     }
 
-    @GetMapping(headers ="X-Api-Version=v1")
-    public ViewAllUserListResponse getAll(){
-        List<User> userList = userService.findAll();
+    @GetMapping(headers = "X-Api-Version=v1")
+    public PaginatedResponse<ViewAllUser> getAll(
+            @RequestParam("page") Integer page,
+            @RequestParam("size") Integer size) {
 
-        List<ViewAllUser> allUserList= new ArrayList<>();
+        Page<User> userPage = userService.findAll(page, size);
 
-        for(User user : userList){
-            ViewAllUser viewAllUser = ViewAllUser
-                    .builder()
-                    .name(user.getName())
-                    .mobileNumber(user.getMobileNumber())
-                    .homeAddress(user.getHomeAddress())
-                    .emailAddress(user.getEmailAddress())
-                    .nicNumber(user.getNicNumber())
-                    .photoUrl(user.getPhotoUrl())
-                    .userRole(user.getUserRole())
-                    .build();
+        List<ViewAllUser> content = userPage.getContent().stream()
+                .map(user -> ViewAllUser.builder()
+                        .name(user.getName())
+                        .mobileNumber(user.getMobileNumber())
+                        .homeAddress(user.getHomeAddress())
+                        .emailAddress(user.getEmailAddress())
+                        .nicNumber(user.getNicNumber())
+                        .photoUrl(user.getPhotoUrl())
+                        .userRole(user.getUserRole())
+                        .build())
+                .collect(Collectors.toList());
 
-            allUserList.add(viewAllUser);
-
-
-        }
-
-        return ViewAllUserListResponse
-                .builder()
-                .viewAllUserList(allUserList)
+        return PaginatedResponse.<ViewAllUser>builder()
+                .content(content)
+                .page(userPage.getNumber())
+                .size(userPage.getSize())
+                .totalElements(userPage.getTotalElements())
+                .totalPages(userPage.getTotalPages())
+                .last(userPage.isLast())
                 .build();
     }
 

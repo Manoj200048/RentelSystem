@@ -14,6 +14,10 @@ import lk.rental.SmartRentalSystem.repository.ItemRepository;
 import lk.rental.SmartRentalSystem.repository.UserRepository;
 import lk.rental.SmartRentalSystem.service.BookingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,5 +97,11 @@ public class BookingServiceImpl implements BookingService {
 
         booking.setStatus(BookingStatus.CANCELLED);
         bookingRepository.save(booking);
+    }
+
+    @Override
+    public Page<Booking> findAll(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page,size, Sort.by(Sort.Order.by("startDate")));
+        return bookingRepository.findAll(pageable);
     }
 }

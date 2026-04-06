@@ -7,6 +7,10 @@ import lk.rental.SmartRentalSystem.model.User;
 import lk.rental.SmartRentalSystem.repository.UserRepository;
 import lk.rental.SmartRentalSystem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -68,5 +72,11 @@ public class UserServiceImpl implements UserService {
         );
 
         userRepository.delete(user);
+    }
+
+    @Override
+    public Page<User> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
     }
 }

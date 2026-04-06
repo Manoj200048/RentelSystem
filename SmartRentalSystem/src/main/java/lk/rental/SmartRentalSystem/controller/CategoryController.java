@@ -4,7 +4,6 @@ import lk.rental.SmartRentalSystem.controller.request.CreateCategoryRequest;
 import lk.rental.SmartRentalSystem.controller.request.UpdateCategoryRequest;
 import lk.rental.SmartRentalSystem.controller.response.ViewAllCategory;
 import lk.rental.SmartRentalSystem.controller.response.ViewAllCategoryListResponse;
-import lk.rental.SmartRentalSystem.controller.response.ViewAllUserListResponse;
 import lk.rental.SmartRentalSystem.controller.response.ViewCategoryResponse;
 import lk.rental.SmartRentalSystem.exception.CategoryNotFoundException;
 import lk.rental.SmartRentalSystem.model.Category;

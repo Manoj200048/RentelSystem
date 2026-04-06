@@ -5,6 +5,7 @@ import lk.rental.SmartRentalSystem.exception.BookingNotFoundException;
 import lk.rental.SmartRentalSystem.exception.PaymentNotFoundException;
 import lk.rental.SmartRentalSystem.exception.UserNotFoundException;
 import lk.rental.SmartRentalSystem.model.Payment;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface PaymentService {
     void updatePaymentStatus(Long pid,Long bid) throws PaymentNotFoundException,BookingNotFoundException;
     Payment findById(Long id) throws PaymentNotFoundException;
     List<Payment> findAll();
+    Page<Payment> findAll(Integer page, Integer size);
 }

@@ -1,6 +1,7 @@
 package lk.rental.SmartRentalSystem.controller;
 
 import lk.rental.SmartRentalSystem.controller.request.CreatePaymentRequest;
+import lk.rental.SmartRentalSystem.controller.response.PaginatedResponse;
 import lk.rental.SmartRentalSystem.controller.response.ViewAllPayment;
 import lk.rental.SmartRentalSystem.controller.response.ViewAllPaymentResponse;
 import lk.rental.SmartRentalSystem.controller.response.ViewPaymentResponse;
@@ -9,12 +10,15 @@ import lk.rental.SmartRentalSystem.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/payment")
@@ -53,26 +57,27 @@ public class PaymentController {
     }
 
     @GetMapping(headers = "X-Api-Version=v1")
-    public ViewAllPaymentResponse getAll(){
-        List<Payment> paymentList = paymentService.findAll();
+    public PaginatedResponse<ViewAllPayment> getAll(@RequestParam("page")Integer page,@RequestParam("size")Integer size){
+        Page<Payment> paymentPage = paymentService.findAll(page,size);
 
-        List<ViewAllPayment> viewAllPayments = new ArrayList<>();
+        List<ViewAllPayment> content = paymentPage.getContent().stream()
+                .map(payment -> ViewAllPayment
+                        .builder()
+                        .amount(payment.getAmount())
+                        .paymentMethod(payment.getPaymentMethod())
+                        .transactionId(payment.getTransactionId())
+                        .paymentStatus(payment.getPaymentStatus())
+                        .createdAt(payment.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
 
-        for (Payment payment : paymentList){
-            ViewAllPayment viewAllPayment = ViewAllPayment
-                    .builder()
-                    .amount(payment.getAmount())
-                    .paymentMethod(payment.getPaymentMethod())
-                    .transactionId(payment.getTransactionId())
-                    .paymentStatus(payment.getPaymentStatus())
-                    .createdAt(payment.getCreatedAt())
-                    .build();
-
-            viewAllPayments.add(viewAllPayment);
-        }
-        return ViewAllPaymentResponse
-                .builder()
-                .viewAllPaymentList(viewAllPayments)
+        return PaginatedResponse.<ViewAllPayment>builder()
+                .content(content)
+                .page(paymentPage.getNumber())
+                .size(paymentPage.getSize())
+                .totalElements(paymentPage.getTotalElements())
+                .totalPages(paymentPage.getTotalPages())
+                .last(paymentPage.isLast())
                 .build();
 
     }

@@ -15,6 +15,10 @@ import lk.rental.SmartRentalSystem.repository.PaymentRepository;
 import lk.rental.SmartRentalSystem.repository.UserRepository;
 import lk.rental.SmartRentalSystem.service.PaymentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -102,6 +106,12 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<Payment> findAll() {
         return paymentRepository.findAll();
+    }
+
+    @Override
+    public Page<Payment> findAll(Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page,size);
+        return paymentRepository.findAll(pageable);
     }
 
 
